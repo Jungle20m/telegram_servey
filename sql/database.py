@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 engine = create_engine(
-    "mysql+mysqlconnector://hrms:8MNwpD5kZP2WBfcN@172.16.1.50:3306/db_hrms"  
+    "mysql+mysqlconnector://root:123456a@@127.0.0.1:3306/survey_db"  
 )
 
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)

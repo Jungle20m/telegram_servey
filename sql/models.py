@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Integer, Date, DateTime, Text
+from sqlalchemy.sql import func
 
 from .database import Base
 
@@ -25,36 +26,66 @@ class User(Base):
     trial_date = Column(Date)
     telegram_id = Column(Integer)
 
-    
-class TimeKeeping(Base):
-    __tablename__ = 'timekeeping' 
-    
+
+class Answer(Base):
+    __tablename__ = 'answers'
+
+    id = Column(Integer, primary_key=True, index=True)
+    question_id = Column(Integer)
+    name = Column(String(255))
+    callback = Column(String(255))
+    status = Column(Integer)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
+
+    def is_correct(self):
+        return True if self.status == 1 else False
+
+
+class Question(Base):
+    __tablename__ = 'questions'
+
+    id = Column(Integer, primary_key=True, index=True)
+    servey_id = Column(Integer)
+    next_question_id = Column(Integer)
+    name = Column(String(255))
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
+
+
+class Servey(Base):
+    __tablename__ = 'servey'
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255))
+    name = Column(String(255))
+    description = Column(String(65535))
+    head_question_id = Column(Integer)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
+
+
+class UserServey(Base):
+    __tablename__ = 'user_servey'
+
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer)
-    checkin = Column(DateTime)
-    checkout = Column(DateTime)
-    note = Column(Text)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    servey_id = Column(Integer)
 
 
-class Department(Base):
-    __tablename__ = 'departments'
-    
+class ServeyTimes(Base):
+    __tablename__ = 'servey_times'
+
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(45))
-    short_name = Column(String(255))
-    leader_id = Column(String(45))
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    user_servey_id = Column(Integer)
+    key = Column(String(255))
+    created_at = Column(DateTime(timezone=True), default=func.now())
 
 
-class UserDepartment(Base):
-    __tablename__ = 'user_departments'
-    
+class ServeyHistory(Base):
+    __tablename__ = 'servey_history'
+
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer)
-    department_id = Column(Integer)
-    position = Column(Integer)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    servey_time_id = Column(Integer)
+    question_id = Column(Integer)
+    answer_id = Column(Integer)

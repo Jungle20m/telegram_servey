@@ -27,35 +27,68 @@ class User(BaseModel):
         orm_mode = True
         
 
-class TimeKeeping(BaseModel):
+class Question(BaseModel):
     id: int
-    user_id: int
-    checkin: Optional[datetime] = None
-    checkout: Optional[datetime] = None
-    note: str
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
-    
-    class Config:
-        orm_mode = True
-        
-
-class Department(BaseModel):
-    id: int
+    servey_id: int
+    next_question_id: int
     name: str
-    short_name: str
-    leader_id: str
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    
+
     class Config:
         orm_mode = True
-        
 
-class UserDepartment(BaseModel):
+
+class Answer(BaseModel):
     id: int
-    user_id: int
-    department_id: int
-    position: int
+    question_id: int
+    name: str
+    callback: str
+    status: int
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
+
+
+class Servey(BaseModel):
+    id: int
+    title: str
+    name: str
+    description: str
+    head_question_id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
+
+
+class UserServey(BaseModel):
+    id: int
+    user_id: int
+    servey_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class ServeyTimes(BaseModel):
+    id: int
+    user_servey_id: int
+    key: str
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class ServeyHistory(BaseModel):
+    id: int
+    servey_time_id: int
+    question_id: int
+    answer_id: int
+
+    class Config:
+        orm_mode = True
